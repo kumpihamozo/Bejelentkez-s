@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login / Register</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="tabs">
+
+<button class="tab active" data-form="loginForm">
+Bejelentkezés
+</button>
+
+<button class="tab" data-form="registerForm">
+Regisztráció
+</button>
+
+</div>
+
+<!-- LOGIN -->
+
+<form id="loginForm" class="form active">
+
+<h2>Bejelentkezés</h2>
+
+<input type="email" id="loginEmail" placeholder="Email">
+
+<div class="password-box">
+
+<input type="password" id="loginPassword" placeholder="Jelszó">
+<span class="eye">👁️</span>
+
+</div>
+
+<button type="submit">Belépés</button>
+
+<p class="forgot" id="forgotPassword">Elfelejtett jelszó?</p>
+
+</form>
+
+<!-- REGISTER -->
+
+<form id="registerForm" class="form">
+
+<h2>Regisztráció</h2>
+
+<input type="text" id="regName" placeholder="Felhasználónév">
+
+<input type="email" id="regEmail" placeholder="Email">
+
+<div class="password-box">
+
+<input type="password" id="regPassword" placeholder="Jelszó">
+<span class="eye">👁️</span>
+
+</div>
+
+<div id="passwordError"></div>
+
+<div class="password-box">
+
+<input type="password" id="regPassword2" placeholder="Jelszó újra">
+<span class="eye">👁️</span>
+
+</div>
+
+<!-- NEWSLETTER -->
+<label class="terms">
+
+<input type="checkbox" id="newsletter">
+
+Feliratkozom a hírlevélre
+
+</label>
+
+<!-- TERMS -->
+<label class="terms">
+
+<input type="checkbox" id="terms">
+
+Elfogadom a felhasználási feltételeket
+
+</label>
+
+<button type="submit">Regisztráció</button>
+
+</form>
+
+<p id="message"></p>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

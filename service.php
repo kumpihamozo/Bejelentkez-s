@@ -2,18 +2,18 @@
 $servername = "localhost";
 $dbusername = "root";   // change if needed
 $dbpassword = "";       // change if needed
-$dbname = "parkside_db";
+$nyaldki = "parkside_db";
 
-$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+$conn = new mysqli($servername, $dbusername, $dbpassword, $nyaldki);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if(isset($_GET['username']) and isset($_GET['password'])){
-    $username = $_GET['username'];
-    $password = $_GET['password'];
-    $sql = "SELECT * FROM felhasznalok WHERE username = '$username' AND password = '$password'";
+if(isset($_GET['a']) and isset($_GET['b'])){
+    $email = $_GET['a'];
+    $password = $_GET['b'];
+    $sql = "SELECT * FROM felhasznalok WHERE email = '$email' AND password = '$password'";
     // Execute the query
     if(!($result = mysqli_query($conn, $sql))){
         echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
@@ -22,7 +22,7 @@ if(isset($_GET['username']) and isset($_GET['password'])){
         if($resultCheck > 0){
             while ($row = mysqli_fetch_assoc($result)){
                 echo $row['name'];
-                header('Location: http://localhost/bejelentkez-s/bejelentkezés.html?name='.$row['name']);
+                //header('Location: http://localhost/bejelentkez-s/bejelentkezés.html?name='.$row['name']);
             }
         }else{
             echo "nincs találat";

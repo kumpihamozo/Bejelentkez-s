@@ -22,7 +22,7 @@ if(isset($_GET['username']) and isset($_GET['password'])){
         if($resultCheck > 0){
             while ($row = mysqli_fetch_assoc($result)){
                 echo $row['name'];
-                header('Location: http://localhost/bejelentkezo/parkside.html?name='.$row['name']);
+                header('Location: http://localhost/bejelentkez-s/bejelentkezés.html?name='.$row['name']);
             }
         }else{
             echo "nincs találat";

@@ -29,7 +29,7 @@ input.type=input.type==="password"?"text":"password";
 
 // EMAIL CHECK
 function validEmail(email){
-return email.includes("@");
+return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 // PASSWORD CHECK (bővített speciális karakterek)
@@ -53,9 +53,21 @@ return "Kell speciális karakter";
 return "";
 }
 
+async function sendAuthRequest(data){
+const response=await fetch("service.php",{
+method:"POST",
+body:new URLSearchParams(data)
+});
+const result=await response.json();
+if(!response.ok){
+throw new Error(result.message||"A kérés nem sikerült");
+}
+return result;
+}
+
 // REGISTER
 document.getElementById("registerForm")
-.addEventListener("submit",e=>{
+.addEventListener("submit",async e=>{
 
 e.preventDefault();
 
@@ -69,7 +81,8 @@ let newsletter=document.getElementById("newsletter");
 let pwError=document.getElementById("passwordError");
 pwError.innerText="";
 
-let users=JSON.parse(localStorage.getItem("users"))||[];
+name.value=name.value.trim();
+email.value=email.value.trim().toLowerCase();
 
 // empty check
 if(!name.value||!email.value||!pass.value||!pass2.value){
@@ -115,93 +128,45 @@ return;
 
 }
 
-// duplicate email
-if(users.some(u=>u.email===email.value)){
-
-message.style.color="red";
-message.innerText="❌ Ez az email már létezik";
-return;
-
-}
-
-// save user
-users.push({
-name:name.value,
-email:email.value,
-password:pass.value,
-newsletter:newsletter.checked
-});
-
-localStorage.setItem("users",JSON.stringify(users));
-
+try{
+const result=await sendAuthRequest({action:"register",name:name.value,email:email.value,password:pass.value,newsletter:newsletter.checked?"1":"0"});
 message.style.color="green";
-message.innerText="✅ Sikeres regisztráció";
-
+message.innerText=result.message;
 e.target.reset();
+}catch(error){
+message.style.color="red";
+message.innerText=error.message;
+}
 
 });
 
 // LOGIN
 document.getElementById("loginForm")
-.addEventListener("submit",e=>{
+.addEventListener("submit",async e=>{
 
 e.preventDefault();
 
 let email=document.getElementById("loginEmail");
 let pass=document.getElementById("loginPassword");
 
-let users=JSON.parse(localStorage.getItem("users"))||[];
+email.value=email.value.trim().toLowerCase();
 
-let user=users.find(u=>
-u.email===email.value &&
-u.password===pass.value
-);
-
-if(!user){
-
-message.style.color="red";
-message.innerText="❌ Hibás email vagy jelszó";
-return;
-
-}
+try{
+const result=await sendAuthRequest({action:"login",email:email.value,password:pass.value});
 
 message.style.color="green";
-message.innerText="✅ Üdv "+user.name;
-
+message.innerText=result.message;
 e.target.reset();
+}catch(error){
+message.style.color="red";
+message.innerText=error.message;
+}
 
 });
 
 // FORGOT PASSWORD
 document.getElementById("forgotPassword")
 .addEventListener("click",()=>{
-
-let email=prompt("Add meg az email címed:");
-
-if(!email){
-alert("Nem adtál meg emailt");
-return;
-}
-
-let users=JSON.parse(localStorage.getItem("users"))||[];
-
-let index=users.findIndex(u=>u.email===email);
-
-if(index===-1){
-alert("Nincs ilyen felhasználó");
-return;
-}
-
-let newPass=prompt("Add meg az új jelszót (min 8 karakter):");
-
-if(!newPass||newPass.length<8){
-alert("Túl rövid jelszó");
-return;
-}
-
-users[index].password=newPass;
-
-localStorage.setItem("users",JSON.stringify(users));
-
-alert("Sikeres jelszó módosítás");
+message.style.color="red";
+message.innerText="A jelszó-visszaállításhoz email-küldő szolgáltatás szükséges.";
 });

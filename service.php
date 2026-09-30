@@ -1,19 +1,15 @@
 <?php
+require_once __DIR__ . '/db.php';
+
+start_app_session();
 header('Content-Type: application/json; charset=utf-8');
 
-$servername = "localhost";
-$dbusername = "root";
-$dbpassword = "";
-$databaseName = "login_db";
-
-$conn = new mysqli($servername, $dbusername, $dbpassword, $databaseName);
-
-if ($conn->connect_error) {
+try {
+    $conn = connect_database();
+} catch (RuntimeException $error) {
     http_response_code(500);
-    exit(json_encode(['success' => false, 'message' => 'Adatbázis-kapcsolati hiba']));
+    exit(json_encode(['success' => false, 'message' => $error->getMessage()]));
 }
-
-$conn->set_charset('utf8mb4');
 
 if($_SERVER['REQUEST_METHOD'] !== 'POST'){
     http_response_code(405);
@@ -65,16 +61,20 @@ if($action === 'register'){
     exit;
 }
 
-$statement = $conn->prepare('SELECT name, password FROM felhasznalok WHERE email = ? LIMIT 1');
+$statement = $conn->prepare('SELECT id, name, password FROM felhasznalok WHERE email = ? LIMIT 1');
 $statement->bind_param('s', $email);
 $statement->execute();
-$statement->bind_result($userName, $hashedPassword);
+$statement->bind_result($userId, $userName, $hashedPassword);
 $userFound = $statement->fetch();
 
 if(!$userFound || !password_verify($password, $hashedPassword)){
     http_response_code(401);
     exit(json_encode(['success' => false, 'message' => 'Hibás email vagy jelszó']));
 }
+
+session_regenerate_id(true);
+$_SESSION['user_id'] = (int) $userId;
+$_SESSION['user_name'] = $userName;
 
 echo json_encode(['success' => true, 'message' => 'Üdv ' . $userName]);
 $statement->close();

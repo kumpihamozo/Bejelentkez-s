@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
+    <title>Szexchat.com – Romantikus chat</title>
 
     <style>
         * {
@@ -13,92 +13,255 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: white;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 24px 14px;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 15%, rgba(255, 220, 226, .85), transparent 34%),
+                radial-gradient(ellipse at 90% 85%, rgba(241, 172, 190, .45), transparent 32%),
+                linear-gradient(135deg, #f8e8e7, #f3d4dd 52%, #e9c7d7);
+            color: #542c3d;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .chat {
-            width: 95%;
-            max-width: 800px;
-            height: 90vh;
-            background: #1e293b;
-            border-radius: 18px;
+            width: min(100%, 820px);
+            height: min(850px, calc(100vh - 48px));
+            min-height: 430px;
+            background: rgba(255, 251, 249, .96);
+            border: 1px solid rgba(255, 255, 255, .8);
+            border-radius: 26px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 24px 70px rgba(99, 41, 66, .2);
         }
 
         .header {
-            background: #2563eb;
-            padding: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            gap: 14px;
+            padding: 22px 26px;
+            color: #fffaf8;
+            background: linear-gradient(115deg, #a83d69, #d06b85 65%, #e38c9a);
+            box-shadow: 0 5px 18px rgba(117, 41, 71, .16);
         }
 
-        .message {
-            align-self: flex-end;
-            max-width: 70%;
-            background: #2563eb;
-            padding: 12px 16px;
-            border-radius: 16px 16px 4px 16px;
-            word-break: break-word;
+        .heart {
+            display: grid;
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .18);
+            font-size: 23px;
         }
 
-        .time {
-            display: block;
-            font-size: 10px;
-            opacity: 0.6;
-            margin-top: 5px;
+        .brand {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 22px;
+            letter-spacing: .2px;
         }
 
-        .input-area {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-            background: #172033;
+        .tagline {
+            margin-top: 4px;
+            color: rgba(255, 250, 248, .82);
+            font-size: 13px;
         }
 
-        .input-area input {
+        .header-copy {
             flex: 1;
-            padding: 14px;
-            border: none;
-            outline: none;
-            border-radius: 12px;
-            background: #334155;
-            color: white;
-            font-size: 16px;
+            min-width: 0;
         }
 
-        .input-area input::placeholder {
-            color: #94a3b8;
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .input-area button {
-            border: none;
-            padding: 0 22px;
-            border-radius: 12px;
-            background: #2563eb;
+        .current-user {
+            color: rgba(255, 250, 248, .9);
+            font-size: 13px;
+        }
+
+        .logout-button {
+            padding: 9px 14px;
+            border: 1px solid rgba(255, 255, 255, .45);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .12);
             color: white;
             font-weight: bold;
             cursor: pointer;
         }
 
+        .logout-button:hover {
+            background: rgba(255, 255, 255, .24);
+        }
+
+        .chat-status {
+            min-height: 18px;
+            padding: 6px 24px 0;
+            color: #92717d;
+            background: #fffaf8;
+            font-size: 12px;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background:
+                radial-gradient(circle at 10% 15%, rgba(246, 220, 225, .4), transparent 25%),
+                #fffaf8;
+        }
+
+        .empty-state {
+            margin: auto;
+            color: #a27a88;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .message {
+            width: fit-content;
+            max-width: 100%;
+            background: linear-gradient(135deg, #bd4d75, #d8738c);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 18px 18px 5px 18px;
+            word-break: break-word;
+            box-shadow: 0 5px 14px rgba(162, 59, 99, .14);
+        }
+
+        .message-row {
+            display: flex;
+            max-width: 76%;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .message-row.mine {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message-row.other {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+
+        .message-row.other .message {
+            border-radius: 18px 18px 18px 5px;
+            background: #f2e3e8;
+            color: #542c3d;
+        }
+
+        .sender {
+            padding: 0 5px;
+            color: #9a697d;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .time {
+            display: block;
+            font-size: 11px;
+            opacity: .75;
+            margin-top: 5px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #fff;
+            border-top: 1px solid #f0dfe3;
+        }
+
+        .input-area input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 17px;
+            border: 1px solid #ecd8df;
+            outline: none;
+            border-radius: 999px;
+            background: #fff9f8;
+            color: #542c3d;
+            font-size: 16px;
+        }
+
+        .input-area input:focus {
+            border-color: #c45a7d;
+            box-shadow: 0 0 0 3px rgba(196, 90, 125, .12);
+        }
+
+        .input-area input::placeholder {
+            color: #b18d99;
+        }
+
+        .input-area button {
+            border: none;
+            padding: 0 24px;
+            border-radius: 999px;
+            background: #a83d69;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+        }
+
         .input-area button:hover {
-            background: #1d4ed8;
+            background: #873052;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 10px;
+            }
+
+            .chat {
+                height: calc(100vh - 20px);
+                min-height: 360px;
+                border-radius: 20px;
+            }
+
+            .header {
+                padding: 18px;
+            }
+
+            .header-actions {
+                align-items: flex-end;
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .current-user {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .messages {
+                padding: 18px;
+            }
+
+            .input-area {
+                padding: 12px;
+            }
+
+            .input-area button {
+                padding: 0 18px;
+            }
         }
     </style>
 </head>
@@ -108,12 +271,21 @@
 <div class="chat">
 
     <div class="header">
-        💬 Chat
+        <span class="heart" aria-hidden="true">♥</span>
+        <div class="header-copy">
+            <div class="brand">Szexchat.com</div>
+            <div class="tagline">Közös, élő beszélgetés</div>
+        </div>
+        <div class="header-actions">
+            <span class="current-user" id="currentUser">Betöltés…</span>
+            <button class="logout-button" id="logoutButton" type="button">Kilépés</button>
+        </div>
     </div>
 
     <div class="messages" id="messages">
-        <!-- Ide kerülnek az üzenetek -->
+        <p class="empty-state" id="emptyState">Kezdj egy kedves beszélgetést… <span aria-hidden="true">♥</span></p>
     </div>
+    <p class="chat-status" id="chatStatus" role="status" aria-live="polite"></p>
 
     <form class="input-area" id="chatForm">
 
@@ -122,6 +294,8 @@
             id="messageInput"
             placeholder="Írj egy üzenetet..."
             autocomplete="off"
+            maxlength="1000"
+            required
         >
 
         <button type="submit">
@@ -136,44 +310,135 @@
     const form = document.getElementById("chatForm");
     const input = document.getElementById("messageInput");
     const messages = document.getElementById("messages");
+    const currentUser = document.getElementById("currentUser");
+    const chatStatus = document.getElementById("chatStatus");
+    const logoutButton = document.getElementById("logoutButton");
+    let lastMessageId = 0;
+    let currentUserId = 0;
+    let isLoadingMessages = false;
 
-    form.addEventListener("submit", function(event) {
+    async function readApiResponse(response) {
+        const responseText = await response.text();
+        try {
+            return JSON.parse(responseText);
+        } catch (error) {
+            if (responseText.trimStart().startsWith("<?php") || responseText.trimStart().startsWith("<!DOCTYPE")) {
+                throw new Error("A chat API nem JSON-választ adott. Nyisd meg XAMPP alatt, Apache-on keresztül, és ellenőrizd, hogy a PHP hibamentesen fut-e.");
+            }
+            throw new Error(`A chat szerverének válasza hibás (HTTP ${response.status}). Ellenőrizd az Apache/PHP naplót.`);
+        }
+    }
+
+    async function loadMessages() {
+        if (isLoadingMessages) return;
+        isLoadingMessages = true;
+
+        try {
+            const response = await fetch(`chat_api.php?action=messages&after=${lastMessageId}`, {
+                cache: "no-store"
+            });
+            const result = await readApiResponse(response);
+
+            if (response.status === 401) {
+                window.location.replace("bejelentkezés.html");
+                return;
+            }
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "Nem sikerült betölteni a chatet.");
+            }
+
+            currentUserId = Number(result.user.id);
+            currentUser.textContent = `Belépve: ${result.user.name}`;
+            chatStatus.textContent = "Kapcsolat aktív · az üzenetek automatikusan frissülnek";
+
+            result.messages.forEach(message => {
+                addMessage(message);
+                lastMessageId = Math.max(lastMessageId, Number(message.id));
+            });
+        } catch (error) {
+            chatStatus.textContent = error.message || "A szerver nem érhető el.";
+        } finally {
+            isLoadingMessages = false;
+        }
+    }
+
+    function addMessage(messageData) {
+        const emptyState = document.getElementById("emptyState");
+        if (emptyState) emptyState.remove();
+
+        const row = document.createElement("div");
+        const isMine = Number(messageData.user_id) === currentUserId;
+        row.className = `message-row ${isMine ? "mine" : "other"}`;
+
+        const sender = document.createElement("span");
+        sender.className = "sender";
+        sender.textContent = isMine ? "Te" : messageData.user_name;
+
+        const bubble = document.createElement("div");
+        bubble.className = "message";
+        bubble.textContent = messageData.message;
+
+        const time = document.createElement("span");
+        time.className = "time";
+        const sentAt = new Date(String(messageData.created_at).replace(" ", "T"));
+        time.textContent = Number.isNaN(sentAt.getTime())
+            ? ""
+            : sentAt.toLocaleTimeString("hu-HU", { hour: "2-digit", minute: "2-digit" });
+        bubble.appendChild(time);
+
+        row.append(sender, bubble);
+        messages.appendChild(row);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener("submit", async function(event) {
         event.preventDefault();
-
         const text = input.value.trim();
-
         if (text === "") return;
 
-        // Üzenet létrehozása
-        const message = document.createElement("div");
-        message.className = "message";
+        const sendButton = form.querySelector("button[type='submit']");
+        sendButton.disabled = true;
+        try {
+            const response = await fetch("chat_api.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+                body: new URLSearchParams({ action: "send", message: text })
+            });
+            const result = await readApiResponse(response);
 
-        const time = new Date().toLocaleTimeString("hu-HU", {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+            if (response.status === 401) {
+                window.location.replace("bejelentkezés.html");
+                return;
+            }
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "Az üzenet küldése nem sikerült.");
+            }
 
-        message.innerHTML = `
-            ${escapeHTML(text)}
-            <span class="time">${time}</span>
-        `;
-
-        // Üzenet hozzáadása a chathez
-        messages.appendChild(message);
-
-        // Input törlése
-        input.value = "";
-
-        // Automatikus görgetés
-        messages.scrollTop = messages.scrollHeight;
+            input.value = "";
+            await loadMessages();
+        } catch (error) {
+            chatStatus.textContent = error.message || "Az üzenet küldése nem sikerült.";
+        } finally {
+            sendButton.disabled = false;
+            input.focus();
+        }
     });
 
-    // Biztonságos szövegmegjelenítés
-    function escapeHTML(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-    }
+    logoutButton.addEventListener("click", async function() {
+        logoutButton.disabled = true;
+        try {
+            await fetch("chat_api.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+                body: new URLSearchParams({ action: "logout" })
+            });
+        } finally {
+            window.location.replace("bejelentkezés.html");
+        }
+    });
+
+    loadMessages();
+    window.setInterval(loadMessages, 1200);
 </script>
 
 </body>

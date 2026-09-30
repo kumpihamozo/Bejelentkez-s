@@ -54,11 +54,23 @@ return "";
 }
 
 async function sendAuthRequest(data){
-const response=await fetch("service.php",{
+let response;
+try{
+response=await fetch("service.php",{
 method:"POST",
 body:new URLSearchParams(data)
 });
-const result=await response.json();
+}catch(error){
+throw new Error("Nem sikerült kapcsolódni a szerverhez. Ellenőrizd, hogy a szerver fut-e, majd próbáld újra.");
+}
+
+let result;
+try{
+result=await response.json();
+}catch(error){
+throw new Error("A szerver válasza nem értelmezhető. Próbáld újra később.");
+}
+
 if(!response.ok){
 throw new Error(result.message||"A kérés nem sikerült");
 }
@@ -156,7 +168,7 @@ const result=await sendAuthRequest({action:"login",email:email.value,password:pa
 
 message.style.color="green";
 message.innerText=result.message;
-e.target.reset();
+window.location.href="index.html";
 }catch(error){
 message.style.color="red";
 message.innerText=error.message;
